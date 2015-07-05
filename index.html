@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="WikiSearch">
+<head>
+	<title>Wiki Search</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-resource.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript" src="app.js"></script>
+</head>
+<body>
+
+<div ng-controller="WikiCtrl">
+	<input type="text" placeholder="Search" ng-model="query">
+	<table class="table table-striped" >
+		<tr ng-repeat='data in wikiData.query.search'>
+			<td>{{data.title}} - {{data.snippet}}</td>
+		</tr>
+	</table>
+</div>
+
+<!-- 
+1. header Bar with title
+2. Search box
+3. List of search items 
+ -->
+</body>
+</html>
