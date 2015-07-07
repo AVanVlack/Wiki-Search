@@ -1,25 +1,23 @@
 angular.module('WikiSearch',['ngResource'])
-
-.controller('WikiCtrl', function($scope, $resource){
-	$scope.fullSearch = $resource('https://en.wikipedia.org/w/api.php' ,
-		{format: 'json', action: 'query', list: 'search', srsearch: 'javascript', callback: 'JSON_CALLBACK'},
-		{get: {method: 'JSONP'}});
-	$scope.wikiData = $scope.fullSearch.get()
+.controller('WikiCtrl', function($scope, $resource){ 
+	$scope.$watch('query', function(newValue, oldValue){
+		if (newValue !== undefined){
+			$scope.wiki = $resource('https://en.wikipedia.org/w/api.php' ,
+				{action: 'opensearch', format: 'json', search: newValue, callback: 'JSON_CALLBACK'},
+				{get: {method: 'JSONP', isArray: true, 
+				transformResponse: function(data, header){
+					dataSet = [];
+					for(var i = 0; i <= data[1].length -1; i++){
+						var d = {};
+						d.name = data[1][i];
+						d.snip = data[2][i];
+						d.link = data[3][i];
+						dataSet.push(d);
+					}
+					return dataSet;
+				}}});
+			$scope.wikiData = $scope.wiki.get()
+			console.log($scope.wikiData)
+		}
+	})
 }) 
-
-
-
-
-//after a few (3) letters, function is called to get opensearch query.
-//open search is placed in 
-//query search is requested with top open search item.
-
-
-
-//---- User Experinece --------
-//User can input a search term into box in center of page.
-//Sugestion apper after a few letters.
-//Pressing enter or clicking on suggestion:
-	//brings up search terms.
-	//places search box in header bar.
-//Button in header brings random term.
